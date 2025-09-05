@@ -340,7 +340,7 @@
         }
 
         .map-section {
-            background: url(img/bg-3.svg);
+            background: url(img/bg-3.svg) no-repeat center/cover;
             color: white;
         }
 
@@ -654,7 +654,7 @@
         }
 
         .tide-table th {
-            background: linear-gradient(135deg, #34495e, #2c3e50);
+            background: #F44C1F;
             color: #fff;
             padding: 12px 8px;
             text-align: center;
@@ -1091,7 +1091,7 @@
                     <table class="tide-table">
                         <thead>
                             <tr>
-                                <th>Time</th>
+                                <th>Time (UTC +7)</th>
                                 <th>Tide Level (m)</th>
                                 <th>Weather</th>
                             </tr>
@@ -1277,7 +1277,7 @@
         // Fetch weather data from AccuWeather API
         async function fetchWeatherData() {
             const API_KEY = 'WxUMlB3SDUwd1MohQYAEbq7reIGtmP1O';
-            const LOCATION_KEY = '3450068'; // Jakarta location key
+            const LOCATION_KEY = '3450068';
             
             try {
                 // Fetch current conditions
