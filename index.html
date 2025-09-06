@@ -1434,7 +1434,6 @@
         }
 
         // Get user location and fetch weather
-        // Get user location and fetch weather
         function getUserLocationAndWeather() {
             // Check if browser supports Geolocation API
             if (navigator.geolocation) {
@@ -1511,7 +1510,8 @@
                 document.getElementById('weather-condition').classList.remove('pulse');
             }
         }
-        
+
+
         // Get AccuWeather location key from coordinates
         async function getLocationKeyFromCoords(lat, lon) {
             const API_KEY = 'WxUMlB3SDUwd1MohQYAEbq7reIGtmP1O';
