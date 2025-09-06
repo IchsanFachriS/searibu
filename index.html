@@ -128,15 +128,17 @@
             animation: shimmer 3s ease-in-out infinite;
             font-style: italic;
             position: relative;
-            display: inline-block;
+            text-align: center;
         }
 
         .hero h1::after {
             content: "";
             position: absolute;
-            left: 0;
+            left: 50%;
+            transform: translateX(-50%);
             bottom: 10px;
-            width: 100%;
+            width: 80%;
+            max-width: 400px;
             height: 4px;
             background: linear-gradient(45deg, #ffc21f, #f44c1f);
             border-radius: 1px;
@@ -365,35 +367,9 @@
             border: 2px solid rgba(255,255,255,0.1);
         }
 
+        /* Hapus kontrol kustom karena kita akan menggunakan yang bawaan Google Maps */
         .map-controls {
-            position: absolute;
-            top: 80px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 100;
-        }
-
-        .map-control-btn {
-            width: 45px;
-            height: 45px;
-            background: rgba(255,255,255,0.95);
-            border: none;
-            border-radius: 12px;
-            font-size: 20px;
-            font-weight: bold;
-            color: #2c5aa0;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .map-control-btn:hover {
-            background: #fff;
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            display: none;
         }
 
         .tide-section {
@@ -401,8 +377,24 @@
             padding: 80px 5%;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             min-height: auto;
+            flex-direction: column;
+        }
+        
+        /* New styling for the section title */
+        .tide-section-title {
+            font-family: 'Newsreader', serif;
+            font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+            font-weight: bold;
+            color: #2c5aa0;
+            align-self: flex-start;
+            margin-bottom: 20px;
+            text-align: left;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 1400px;
+            padding-left: 20px;
         }
 
         .tide-wrapper {
@@ -410,6 +402,7 @@
             gap: 40px;
             max-width: 1400px;
             width: 100%;
+            align-items: stretch;
         }
 
         /* Left panel */
@@ -417,13 +410,78 @@
             flex: 1;
         }
 
+        /* Weather and Sun Info Grid */
+        .weather-sun-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .ancol-weather, .pramuka-weather {
+            background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .sun-times {
+            background: linear-gradient(135deg, #FF8A65 0%, #FF7043 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .weather-sun-grid h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .weather-sun-grid .temp {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+
+        .weather-sun-grid .condition, .weather-sun-grid .time {
+            font-size: 0.9rem;
+            opacity: 0.95;
+        }
+
+        .weather-sun-grid .sun-info {
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+
+        .weather-sun-grid .sun-time {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 2px 0;
+        }
+
         .tide-picker {
             background: #ffeb3b;
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 30px;
-            text-align: left;
+            text-align: center; 
             position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .tide-picker h3 {
@@ -436,43 +494,6 @@
             display: inline-block;
             margin-bottom: 15px;
         }
-
-        .tide-top-row {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-            align-items: stretch;
-            flex-wrap: wrap;
-        }
-
-        .ancol-weather {
-            flex: 1;
-            background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
-            color: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .ancol-weather h3 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-
-        #ancol-temp {
-            font-size: 2rem;
-            font-weight: bold;
-            margin: 8px 0;
-        }
-
-        #ancol-condition {
-            font-size: 1rem;
-        }
-
 
         .picker-inputs {
             display: flex;
@@ -561,7 +582,7 @@
 
         .tide-note {
             font-size: 0.95rem;
-            color: #2c3e50;
+            color: #2c5050;
             background: #fff;
             padding: 20px;
             border-radius: 10px;
@@ -579,14 +600,26 @@
 
         /* Right panel */
         .tide-right {
-            flex: 1;
             background: #fff;
             border-radius: 15px;
             padding: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            max-height: 700px;
-            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            align-self: stretch; /* <-- pastikan stretch */
+            height: auto;        /* ikut tinggi flex parent */
         }
+        
+        .tide-right .table-container {
+            flex: 1;                  /* biar isi tabel ambil sisa ruang */
+            overflow-y: auto;         /* muncul scroll kalau konten lebih panjang */
+            border-radius: 10px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+            max-height: calc(100% - 150px); 
+            /* sisakan ruang untuk .tide-header, .tide-stats, dan .tide-footer */
+        }
+
 
         .tide-header {
             background: linear-gradient(135deg, #3498db, #2980b9);
@@ -640,7 +673,7 @@
         }
 
         .table-container {
-            max-height: 400px;
+            flex: 1;
             overflow-y: auto;
             border-radius: 10px;
             box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
@@ -768,7 +801,7 @@
         .footer-right {
             display: flex;
             flex-direction: column;
-            align-items: flex-start; /* rata kiri */
+            align-items: flex-start; 
             gap: 10px;
         }
         
@@ -819,10 +852,23 @@
             .tide-wrapper {
                 flex-direction: column;
                 gap: 20px;
+                /* Add this to allow children to grow freely */
+                align-items: flex-start;
             }
             
             .picker-inputs {
                 justify-content: center;
+            }
+
+            .weather-sun-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .tide-section-title {
+                text-align: center;
+                align-self: center;
+                padding-left: 0;
             }
         }
 
@@ -855,17 +901,17 @@
             }
 
             .destinations img {
-                max-width: 90%;   /* perbesar gambar */
+                max-width: 90%;
             }
 
             .destinations {
-                background-size: cover;  /* biar background lebih proporsional */
+                background-size: cover;
                 background-position: center;
-                padding: 80px 4% 40px;   /* lebih rapat di HP */
+                padding: 80px 4% 40px;
             }
 
             .destinations .title h2 {
-                font-size: 1.5rem;  /* kecilkan judul biar seimbang */
+                font-size: 1.5rem;
                 text-align: center;
             }
 
@@ -882,6 +928,11 @@
                 width: 40px;
                 height: 40px;
                 font-size: 18px;
+            }
+
+            .weather-sun-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
             }
 
             .footer {
@@ -916,8 +967,7 @@
             }
 
             .destinations img {
-                max-width: 100%;   /* biar gambar full width */
-                margin-left: 10%;  /* geser ke kanan sedikit */
+                max-width: 100%;
             }
 
             .map-wrapper {
@@ -935,6 +985,23 @@
             .tide-header {
                 margin: -15px -15px 15px -15px;
                 font-size: 1rem;
+            }
+
+            .weather-sun-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tide-section-title {
+                text-align: center;
+                align-self: center;
+                font-size: 1.5rem;
+            }
+
+            .hero h1::after {
+                bottom: 5px;
+                height: 3px;
+                width: 90%;
+                max-width: 300px;
             }
         }
 
@@ -954,6 +1021,74 @@
             text-align: center;
             padding: 20px;
             font-style: italic;
+        }
+        
+        /* New CSS for UI/UX improvements */
+        @keyframes slideInUp {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .animated-element {
+            animation: slideInUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .highlight-max {
+            background: linear-gradient(to right, rgba(244, 67, 54, 0.1), rgba(244, 67, 54, 0.2)) !important;
+            font-weight: bold;
+            color: #c62828;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .highlight-min {
+            background: linear-gradient(to right, rgba(76, 175, 80, 0.1), rgba(76, 175, 80, 0.2)) !important;
+            font-weight: bold;
+            color: #2e7d32;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .notification-popup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transform: translateY(100px);
+            opacity: 0;
+        }
+
+        .notification-popup.show {
+            transform: translateY(0);
+            opacity: 1;
         }
     </style>
 
@@ -991,7 +1126,7 @@
                     <p id="day-message">Loading daily inspiration...</p>
                 </div>
                 <div class="weather">
-                    <div class="location">📍 Pramuka Islands</div>
+                    <div class="location" id="user-location">📍 Getting location...</div>
                     <div class="temp pulse" id="temperature">--°</div>
                     <div class="condition pulse" id="weather-condition">Loading...</div>
                 </div>
@@ -999,7 +1134,6 @@
         </div>
     </section>
 
-    <!-- Section Destinations -->
     <section class="destinations">
         <div class="title">
             <h2>Discover Popular Destinations <br> in Seribu Island</h2>
@@ -1007,7 +1141,6 @@
         <img src="img/map.svg" alt="Seribu Islands Map">
     </section>
 
-    <!-- Map -->
     <section class="map-section" id="map-section">
         <h2 class="map-title" id="map-title">Explore your destination!</h2>
         <div class="map-wrapper">
@@ -1019,43 +1152,60 @@
         </div>
     </section>
 
-    <!-- Tide Section -->
     <section class="tide-section">
+        <h2 class="tide-section-title">Let’s Plan Your Island Journeys with Data!</h2>
+
         <div class="tide-wrapper">
-            <!-- Left Panel: Date Picker & Graph -->
             <div class="tide-left">
-                <div class="tide-top-row">
-                    <!-- Existing tide-picker -->
-                    <div class="tide-picker">
-                        <h3>🌊 Check Tides for Any Date!</h3>
-                        <div class="picker-inputs">
-                            <div>
-                                <label>Year</label>
-                                <input type="number" id="year-input" placeholder="2025" min="2025" max="2025">
-                            </div>
-                            <div>
-                                <label>Month</label>
-                                <input type="number" id="month-input" placeholder="MM" min="1" max="12">
-                            </div>
-                            <div>
-                                <label>Day</label>
-                                <input type="number" id="day-input" placeholder="DD" min="1" max="31">
-                            </div>
-                        </div>
-                        <div class="picker-buttons">
-                            <button class="view-btn" id="view-date-btn">View Selected Date</button>
-                            <span>OR</span>
-                            <button class="current-btn" id="current-date-btn">Show Current Date</button>
-                        </div>
+                <div class="weather-sun-grid">
+                    <div class="ancol-weather" id="ancol-weather">
+                        <h3>Today's Ancol Weather</h3>
+                        <p class="temp" id="ancol-temp">--°</p>
+                        <p class="condition" id="ancol-condition">Loading...</p>
                     </div>
 
-                    <!-- New weather card for Ancol -->
-                    <div class="ancol-weather" id="ancol-weather">
-                        <h3>Ancol Weather</h3>
-                        <p id="ancol-temp">--°</p>
-                        <p id="ancol-condition">Loading...</p>
+                    <div class="pramuka-weather" id="pramuka-weather">
+                        <h3>Today's Pramuka Islands Weather</h3>
+                        <p class="temp" id="pramuka-temp">--°</p>
+                        <p class="condition" id="pramuka-condition">Loading...</p>
+                    </div>
+
+                    <div class="sun-times" id="sunrise-info">
+                        <h3>🌅 Today's Sunrise</h3>
+                        <p class="sun-info">Jakarta Time (UTC+7)</p>
+                        <p class="sun-time" id="sunrise-time">--:--</p>
+                    </div>
+
+                    <div class="sun-times" id="sunset-info">
+                        <h3>🌇 Today's Sunset</h3>
+                        <p class="sun-info">Jakarta Time (UTC+7)</p>
+                        <p class="sun-time" id="sunset-time">--:--</p>
                     </div>
                 </div>
+
+                <div class="tide-picker">
+                    <h3>🌊 Check Tides for Any Date!</h3>
+                    <div class="picker-inputs">
+                        <div>
+                            <label>Year</label>
+                            <input type="number" id="year-input" placeholder="2025" min="2025" max="2025">
+                        </div>
+                        <div>
+                            <label>Month</label>
+                            <input type="number" id="month-input" placeholder="MM" min="1" max="12">
+                        </div>
+                        <div>
+                            <label>Day</label>
+                            <input type="number" id="day-input" placeholder="DD" min="1" max="31">
+                        </div>
+                    </div>
+                    <div class="picker-buttons">
+                        <button class="view-btn" id="view-date-btn">View Selected Date</button>
+                        <span>OR</span>
+                        <button class="current-btn" id="current-date-btn">Show Current Date</button>
+                    </div>
+                </div>
+
                 <div class="tide-graph">
                     <h4 id="graph-title">Tide Levels Over the Day</h4>
                     <div class="graph-container">
@@ -1069,7 +1219,6 @@
                 </div>
             </div>
 
-            <!-- Right Panel: Table -->
             <div class="tide-right">
                 <div class="tide-header" id="tide-header-info">
                     🌊 Tide Data for <span id="selected-date-display">Today</span>
@@ -1104,13 +1253,12 @@
                 </div>
 
                 <div class="tide-footer" id="tide-footer-info">
-                    Data source: Pramuka Port tidal predictions. Weather data from AccuWeather API.
+                    Data source: TPXO Web Service tidal predictions. Weather data from AccuWeather API.
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-left">
             <h3><span class="blue">Hydrography Research</span> Group</h3>
@@ -1140,12 +1288,15 @@
     <div class="footer-bottom">
         © 2025 Hydrography Research Group - ITB. All Rights Reserved
     </div>
+    
+    <div id="notification-popup" class="notification-popup"></div>
 
     <script>
         // Global variables
         let tideData = [];
         let tideChart = null;
         let currentSelectedDate = new Date();
+        let userLocationKey = null;
 
         const translations = {
             en: {
@@ -1155,6 +1306,7 @@
                 exploreBtn: "Explore Now",
                 destinationsTitle: "Discover Popular Destinations <br> in Seribu Island",
                 mapTitle: "Explore your destination!",
+                tideSectionTitle: "Let’s Plan Your Island Journeys with Data!",
                 tidePickerTitle: "🌊 Check Tides for Any Date!",
                 viewDateBtn: "View Selected Date",
                 currentDateBtn: "Show Current Date",
@@ -1167,7 +1319,9 @@
                 tideFooter: "Data source: TPXO Web Service tidal predictions. Weather data from AccuWeather API.",
                 feedbackText: "We'd love to hear your feedback!",
                 feedbackPlaceholder: "Share your thoughts...",
-                feedbackBtn: "Send"
+                feedbackBtn: "Send",
+                sunriseTitle: "🌅 Today's Sunrise",
+                sunsetTitle: "🌇 Today's Sunset"
             },
             id: {
                 heroTitle: "Informasi Pasang Surut & Cuaca",
@@ -1176,6 +1330,7 @@
                 exploreBtn: "Jelajahi Sekarang",
                 destinationsTitle: "Temukan Destinasi Populer <br> di Kepulauan Seribu",
                 mapTitle: "Jelajahi tujuanmu!",
+                tideSectionTitle: "Mari Rencanakan Perjalanan Pulau Anda dengan Data!",
                 tidePickerTitle: "🌊 Cek Pasang Surut pada Tanggal Tertentu!",
                 viewDateBtn: "Lihat Tanggal Terpilih",
                 currentDateBtn: "Tampilkan Tanggal Hari Ini",
@@ -1188,7 +1343,9 @@
                 tideFooter: "Sumber data: Prediksi pasang surut TPXO Web Service. Data cuaca dari AccuWeather API.",
                 feedbackText: "Kami ingin mendengar masukan Anda!",
                 feedbackPlaceholder: "Bagikan pendapat Anda...",
-                feedbackBtn: "Kirim"
+                feedbackBtn: "Kirim",
+                sunriseTitle: "🌅 Matahari Terbit Hari Ini",
+                sunsetTitle: "🌇 Matahari Terbenam Hari Ini"
             }
         };
 
@@ -1199,6 +1356,7 @@
             document.querySelector('.hero p').textContent = translations[lang].heroDesc;
             document.querySelector('.destinations .title h2').innerHTML = translations[lang].destinationsTitle;
             document.getElementById('map-title').textContent = translations[lang].mapTitle;
+            document.querySelector('.tide-section-title').textContent = translations[lang].tideSectionTitle;
             document.querySelector('.tide-picker h3').textContent = translations[lang].tidePickerTitle;
             document.getElementById('view-date-btn').textContent = translations[lang].viewDateBtn;
             document.getElementById('current-date-btn').textContent = translations[lang].currentDateBtn;
@@ -1214,17 +1372,19 @@
             document.querySelector('.footer-right p').textContent = translations[lang].feedbackText;
             document.getElementById('feedback-input').placeholder = translations[lang].feedbackPlaceholder;
             document.getElementById('submit-feedback').textContent = translations[lang].feedbackBtn;
+            document.querySelector('#sunrise-info h3').textContent = translations[lang].sunriseTitle;
+            document.querySelector('#sunset-info h3').textContent = translations[lang].sunsetTitle;
         }
 
         // Day messages configuration
         const dayMessages = {
             0: { // Sunday
                 tag: "🌺 Slow Sunday",
-                message: "🏹 Relax, recharge, and enjoy the sunset view from your favorite spot in Seribu Islands."
+                message: "🍹 Relax, recharge, and enjoy the sunset view from your favorite spot in Seribu Islands."
             },
             1: { // Monday
                 tag: "🌞 New Week, New Adventure!",
-                message: "✨ Start your week with fresh energy – how about planning your next island getaway?"
+                message: "✨ Start your week with fresh energy — how about planning your next island getaway?"
             },
             2: { // Tuesday
                 tag: "🌊 Travel Tuesday!",
@@ -1232,7 +1392,7 @@
             },
             3: { // Wednesday
                 tag: "🌴 Midweek Escape",
-                message: "😎 Halfway through the week – imagine relaxing by the sea breeze already!"
+                message: "😎 Halfway through the week — imagine relaxing by the sea breeze already!"
             },
             4: { // Thursday
                 tag: "🌅 Throwback Thursday!",
@@ -1240,10 +1400,10 @@
             },
             5: { // Friday
                 tag: "🎉 Thanks God It's Friday!",
-                message: "🏝️ Weekend is coming – the best time to pack your bag and head to the islands!"
+                message: "🏖️ Weekend is coming — the best time to pack your bag and head to the islands!"
             },
             6: { // Saturday
-                tag: "🖖 Sunny Saturday Vibes!",
+                tag: "🏖️ Sunny Saturday Vibes!",
                 message: "🌞 Perfect day for beach hopping, diving, and soaking up the sun."
             }
         };
@@ -1273,14 +1433,88 @@
             document.getElementById('day-input').value = now.getDate();
         }
 
-        // Fetch weather data from AccuWeather API
-        async function fetchWeatherData() {
+        // Get user location and fetch weather
+        function getUserLocationAndWeather() {
+            if (navigator.geolocation) {
+                document.getElementById('user-location').textContent = '📍 Getting location...';
+                
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        
+                        try {
+                            // Get location key from coordinates
+                            const locationKey = await getLocationKeyFromCoords(lat, lon);
+                            if (locationKey) {
+                                userLocationKey = locationKey.key;
+                                const locationName = locationKey.name;
+                                
+                                document.getElementById('user-location').textContent = `📍 ${locationName}`;
+                                
+                                // Fetch weather for user location
+                                await fetchUserWeather(userLocationKey);
+                            } else {
+                                throw new Error('Location key not found');
+                            }
+                        } catch (error) {
+                            console.log('Error getting user location weather:', error);
+                            // Fallback to default location
+                            document.getElementById('user-location').textContent = '📍 Jakarta, Indonesia';
+                            await fetchUserWeather('588306'); // Jakarta location key
+                        }
+                    },
+                    (error) => {
+                        console.log('Geolocation error:', error);
+                        // Fallback to default location
+                        document.getElementById('user-location').textContent = '📍 Jakarta, Indonesia';
+                        fetchUserWeather('588306'); // Jakarta location key
+                    },
+                    {
+                        timeout: 10000,
+                        enableHighAccuracy: false
+                    }
+                );
+            } else {
+                // Geolocation not supported, use default
+                document.getElementById('user-location').textContent = '📍 Jakarta, Indonesia';
+                fetchUserWeather('588306'); // Jakarta location key
+            }
+        }
+
+        // Get AccuWeather location key from coordinates
+        async function getLocationKeyFromCoords(lat, lon) {
             const API_KEY = 'WxUMlB3SDUwd1MohQYAEbq7reIGtmP1O';
-            const LOCATION_KEY = '3450068';
             
             try {
-                // Fetch current conditions
-                const currentResponse = await fetch(`https://dataservice.accuweather.com/currentconditions/v1/${LOCATION_KEY}?apikey=${API_KEY}`);
+                const response = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${API_KEY}&q=${lat},${lon}`);
+                
+                if (!response.ok) {
+                    throw new Error('Location search failed');
+                }
+                
+                const data = await response.json();
+                
+                if (data && data.Key) {
+                    return {
+                        key: data.Key,
+                        name: `${data.LocalizedName}, ${data.Country.LocalizedName}`
+                    };
+                }
+                
+                return null;
+            } catch (error) {
+                console.error('Error getting location key:', error);
+                return null;
+            }
+        }
+
+        // Fetch weather data for user location
+        async function fetchUserWeather(locationKey) {
+            const API_KEY = 'WxUMlB3SDUwd1MohQYAEbq7reIGtmP1O';
+            
+            try {
+                const currentResponse = await fetch(`http://dataservice.accuweather.com/currentconditions/v1/${locationKey}?apikey=${API_KEY}`);
                 
                 if (!currentResponse.ok) {
                     throw new Error('Weather API request failed');
@@ -1311,6 +1545,92 @@
             }
         }
 
+        // Fetch Ancol weather
+        async function fetchAncolWeather() {
+            const API_KEY = 'WxUMlB3SDUwd1MohQYAEbq7reIGtmP1O';
+            const ANCOL_LOCATION_KEY = '688822';
+            
+            try {
+                const response = await fetch(`http://dataservice.accuweather.com/currentconditions/v1/${ANCOL_LOCATION_KEY}?apikey=${API_KEY}`);
+                
+                if (!response.ok) {
+                    throw new Error('Ancol weather API request failed');
+                }
+                
+                const data = await response.json();
+                
+                if (data && data[0]) {
+                    const temp = Math.round(data[0].Temperature.Metric.Value);
+                    const condition = data[0].WeatherText;
+                    
+                    document.getElementById('ancol-temp').textContent = `${temp}°C`;
+                    document.getElementById('ancol-condition').textContent = `🌤️ ${condition}`;
+                }
+            } catch (error) {
+                console.error('Error fetching Ancol weather:', error);
+                document.getElementById('ancol-temp').textContent = '28°C';
+                document.getElementById('ancol-condition').textContent = '🌤️ Partly Cloudy';
+            }
+        }
+
+        // Fetch Pramuka weather
+        async function fetchPramukaWeather() {
+            const API_KEY = 'WxUMlB3SDUwd1MohQYAEbq7reIGtmP1O';
+            const PRAMUKA_LOCATION_KEY = '3450068';
+            
+            try {
+                const response = await fetch(`http://dataservice.accuweather.com/currentconditions/v1/${PRAMUKA_LOCATION_KEY}?apikey=${API_KEY}`);
+                
+                if (!response.ok) {
+                    throw new Error('Pramuka weather API request failed');
+                }
+                
+                const data = await response.json();
+                
+                if (data && data[0]) {
+                    const temp = Math.round(data[0].Temperature.Metric.Value);
+                    const condition = data[0].WeatherText;
+                    
+                    document.getElementById('pramuka-temp').textContent = `${temp}°C`;
+                    document.getElementById('pramuka-condition').textContent = `🌤️ ${condition}`;
+                }
+            } catch (error) {
+                console.error('Error fetching Pramuka weather:', error);
+                document.getElementById('pramuka-temp').textContent = '28°C';
+                document.getElementById('pramuka-condition').textContent = '🌤️ Partly Cloudy';
+            }
+        }
+
+        // Fetch sunrise and sunset times from WeatherAPI
+        async function fetchSunTimes() {
+            const API_KEY = 'b809ff02fcb142c3a54121906250609';
+            const LOCATION = 'Seribu Islands';
+
+            try {
+                const response = await fetch(
+                    `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${encodeURIComponent(LOCATION)}&days=1&aqi=no&alerts=no`
+                );
+
+                if (!response.ok) {
+                    throw new Error('Sun times API request failed');
+                }
+
+                const data = await response.json();
+
+                if (data && data.forecast && data.forecast.forecastday.length > 0) {
+                    const astro = data.forecast.forecastday[0].astro;
+
+                    document.getElementById('sunrise-time').textContent = astro.sunrise;
+                    document.getElementById('sunset-time').textContent = astro.sunset;
+                }
+            } catch (error) {
+                console.error('Error fetching sun times:', error);
+
+                document.getElementById('sunrise-time').textContent = '06:00 AM';
+                document.getElementById('sunset-time').textContent = '06:00 PM';
+            }
+        }
+
         // Load tide data from CSV
         async function loadTideData() {
             try {
@@ -1328,7 +1648,6 @@
                     complete: function(results) {
                         tideData = results.data;
                         console.log('Tide data loaded:', tideData.length, 'records');
-                        // Load data for current date
                         updateTideDisplay(currentSelectedDate);
                     },
                     error: function(error) {
@@ -1357,7 +1676,6 @@
                 const forecastData = await response.json();
                 
                 if (forecastData && forecastData.DailyForecasts) {
-                    // Find forecast for target date (within 5 days)
                     const targetDateStr = targetDate.toISOString().split('T')[0];
                     
                     for (let forecast of forecastData.DailyForecasts) {
@@ -1371,8 +1689,7 @@
                     }
                 }
                 
-                // Fallback if date not found in forecast
-                return { condition: 'Partly Cloudy', temp: 28 };
+                return { condition: '-', temp: 28 };
                 
             } catch (error) {
                 console.error('Weather forecast error:', error);
@@ -1397,7 +1714,6 @@
         async function updateTideDisplay(selectedDate) {
             currentSelectedDate = selectedDate;
             
-            // Update header info
             const dateStr = selectedDate.toLocaleDateString('en-US', {
                 weekday: 'long',
                 year: 'numeric',
@@ -1408,7 +1724,6 @@
             document.getElementById('selected-date-display').textContent = dateStr;
             document.getElementById('graph-title').textContent = `Tide Levels for ${dateStr}`;
             
-            // Get tide data for the selected date
             const dayTideData = getTideDataForDate(selectedDate);
             
             if (dayTideData.length === 0) {
@@ -1416,7 +1731,6 @@
                 return;
             }
             
-            // Calculate statistics
             const tideValues = dayTideData.map(row => parseFloat(row.z));
             const maxTide = Math.max(...tideValues);
             const minTide = Math.min(...tideValues);
@@ -1424,34 +1738,29 @@
             document.getElementById('max-tide').textContent = `${maxTide.toFixed(3)} m`;
             document.getElementById('min-tide').textContent = `${minTide.toFixed(3)} m`;
             
-            // Get weather forecast
             const weatherForecast = await getWeatherForecast(selectedDate);
             
-            // Update table
-            await updateTideTable(dayTideData, weatherForecast);
+            await updateTideTable(dayTideData, weatherForecast, maxTide, minTide);
             
-            // Update chart
             updateTideChart(dayTideData);
         }
 
-        // Update tide table
-        async function updateTideTable(dayTideData, weatherForecast) {
+        // Update tide table (with highlight function)
+        async function updateTideTable(dayTideData, weatherForecast, maxTide, minTide) {
             const tableBody = document.getElementById('tide-table-body');
             tableBody.innerHTML = '';
             
             dayTideData.forEach(row => {
                 const tr = document.createElement('tr');
                 
-                // Extract hour from datetime
                 const time = row.datetime.split(' ')[1].split(':')[0] + ':00';
                 const tideLevel = parseFloat(row.z).toFixed(3);
                 
-                // Determine tide level class
                 let tideClass = '';
-                if (parseFloat(tideLevel) > 1.5) {
-                    tideClass = 'tide-level-high';
-                } else if (parseFloat(tideLevel) < 0.5) {
-                    tideClass = 'tide-level-low';
+                if (parseFloat(tideLevel) === maxTide) {
+                    tideClass = 'highlight-max';
+                } else if (parseFloat(tideLevel) === minTide) {
+                    tideClass = 'highlight-min';
                 }
                 
                 tr.className = tideClass;
@@ -1465,35 +1774,7 @@
             });
         }
 
-        async function fetchAncolWeather() {
-            const API_URL = "http://dataservice.accuweather.com/currentconditions/v1/688822?apikey=WxUMlB3SDUwd1MohQYAEbq7reIGtmP1O";
-            try {
-                const response = await fetch(API_URL);
-                if (!response.ok) throw new Error("Failed to fetch Ancol weather");
-                const data = await response.json();
-                if (data && data[0]) {
-                    const temp = Math.round(data[0].Temperature.Metric.Value);
-                    const condition = data[0].WeatherText;
-                    document.getElementById("ancol-temp").textContent = `${temp}°C`;
-                    document.getElementById("ancol-condition").textContent = `🌤️ ${condition}`;
-                }
-            } catch (error) {
-                console.error("Error fetching Ancol weather:", error);
-                document.getElementById("ancol-temp").textContent = "28°C";
-                document.getElementById("ancol-condition").textContent = "Partly Cloudy";
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeDate();
-            fetchWeatherData();
-            loadTideData();
-            fetchAncolWeather(); // new line
-        });
-
-
-
-        // Update tide chart
+        // Update tide chart (with improved options)
         function updateTideChart(dayTideData) {
             const ctx = document.getElementById('tideChart').getContext('2d');
             
@@ -1514,15 +1795,13 @@
                     datasets: [{
                         label: 'Tide Level (m)',
                         data: tideValues,
-                        borderColor: '#3498db',
-                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                        borderWidth: 3,
-                        fill: true,
+                        borderColor: '#000',              
+                        backgroundColor: 'rgba(0,0,0,0)', 
+                        borderWidth: 2,                   
+                        fill: true,                      
                         tension: 0.4,
-                        pointBackgroundColor: '#2980b9',
-                        pointBorderColor: '#fff',
-                        pointBorderWidth: 2,
-                        pointRadius: 5
+                        pointRadius: 0,                   
+                        pointHoverRadius: 1               
                     }]
                 },
                 options: {
@@ -1531,6 +1810,17 @@
                     plugins: {
                         legend: {
                             display: false
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                            titleFont: {
+                                size: 14
+                            },
+                            bodyFont: {
+                                size: 12
+                            }
                         }
                     },
                     scales: {
@@ -1541,13 +1831,29 @@
                             },
                             ticks: {
                                 callback: function(value) {
-                                    return value.toFixed(1) + ' m';
+                                    return value.toFixed(1);
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Tide (meters)',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
                                 }
                             }
                         },
                         x: {
                             grid: {
                                 color: 'rgba(0,0,0,0.1)'
+                            },
+                            title: {
+                                display: true,
+                                text: 'Time (UTC+7)',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                }
                             }
                         }
                     },
@@ -1572,6 +1878,21 @@
             document.getElementById('min-tide').textContent = '--';
         }
 
+        // Show feedback notification
+        function showNotification(message, duration = 3000) {
+            let notification = document.querySelector('.notification-popup');
+            if (!notification) {
+                notification = document.createElement('div');
+                notification.className = 'notification-popup';
+                document.body.appendChild(notification);
+            }
+            notification.textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, duration);
+        }
+
         // Event listeners for date picker
         document.getElementById('view-date-btn').addEventListener('click', () => {
             const year = parseInt(document.getElementById('year-input').value);
@@ -1583,10 +1904,10 @@
                 if (!isNaN(selectedDate.getTime())) {
                     updateTideDisplay(selectedDate);
                 } else {
-                    alert('Please enter a valid date');
+                    showNotification('Please enter a valid date', 5000);
                 }
             } else {
-                alert('Please fill in all date fields');
+                showNotification('Please fill in all date fields', 5000);
             }
         });
 
@@ -1602,10 +1923,10 @@
         document.getElementById('submit-feedback').addEventListener('click', () => {
             const feedback = document.getElementById('feedback-input').value.trim();
             if (feedback) {
-                alert('Thank you for your feedback! We appreciate your input.');
+                showNotification('Thank you for your feedback! We appreciate your input.');
                 document.getElementById('feedback-input').value = '';
             } else {
-                alert('Please enter your feedback before submitting.');
+                showNotification('Please enter your feedback before submitting.');
             }
         });
 
@@ -1632,10 +1953,6 @@
             });
         });
 
-        document.addEventListener('DOMContentLoaded', () => {
-            setLanguage('en');
-        });
-
         // Header scroll effect
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
@@ -1657,26 +1974,72 @@
             map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 15,
                 center: center,
-                zoomControl: false,
+                zoomControl: true, // Use Google Maps built-in zoom controls
                 mapTypeControl: true,
                 streetViewControl: false,
                 fullscreenControl: true,
             });
-
-            document.getElementById("zoom-in").addEventListener("click", () => {
-                map.setZoom(map.getZoom() + 1);
-            });
-
-            document.getElementById("zoom-out").addEventListener("click", () => {
-                map.setZoom(map.getZoom() - 1);
-            });
         }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            function syncTideHeights() {
+                const left = document.querySelector(".tide-left");
+                const right = document.querySelector(".tide-right");
+                const tableContainer = right.querySelector(".table-container");
+
+                if (left && right && tableContainer) {
+                    // samakan tinggi kanan dengan kiri
+                    right.style.height = left.offsetHeight + "px";
+
+                    // hitung tinggi elemen non-tabel di kanan (header + stats + footer + padding)
+                    const header = right.querySelector(".tide-header");
+                    const stats  = right.querySelector(".tide-stats");
+                    const footer = right.querySelector(".tide-footer");
+
+                    let nonTableHeight = 0;
+                    if (header) nonTableHeight += header.offsetHeight;
+                    if (stats)  nonTableHeight += stats.offsetHeight;
+                    if (footer) nonTableHeight += footer.offsetHeight;
+
+                    // tambahkan padding atas+bawah .tide-right
+                    const style = window.getComputedStyle(right);
+                    nonTableHeight += parseInt(style.paddingTop) + parseInt(style.paddingBottom);
+
+                    // set tinggi maksimal table-container agar pas
+                    tableContainer.style.maxHeight = (left.offsetHeight - nonTableHeight) + "px";
+                }
+            }
+
+            // panggil pertama kali
+            syncTideHeights();
+
+            // ulangi kalau ukuran layar berubah
+            window.addEventListener("resize", syncTideHeights);
+        });
+        
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated-element');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
             initializeDate();
-            fetchWeatherData();
+            getUserLocationAndWeather();
+            fetchAncolWeather();
+            fetchPramukaWeather();
+            fetchSunTimes();
             loadTideData();
+            setLanguage('en');
+
+            document.querySelectorAll('.weather-card, .destinations, .map-section, .tide-section, .footer').forEach(section => {
+                observer.observe(section);
+            });
         });
     </script>
 </body>
