@@ -1435,16 +1435,22 @@
 
         // Get user location and fetch weather
         function getUserLocationAndWeather() {
+            // Cek apakah browser mendukung Geolocation API
             if (navigator.geolocation) {
+                // Tampilkan pesan loading di awal
                 document.getElementById('user-location').textContent = '📍 Getting location...';
-                
+                document.getElementById('temperature').classList.add('pulse');
+                document.getElementById('weather-condition').classList.add('pulse');
+                document.getElementById('weather-condition').textContent = 'Loading...';
+
+                // Minta izin lokasi dari pengguna
                 navigator.geolocation.getCurrentPosition(
                     async (position) => {
                         const lat = position.coords.latitude;
                         const lon = position.coords.longitude;
                         
                         try {
-                            // Get location key from coordinates
+                            // Dapatkan location key dari koordinat
                             const locationKey = await getLocationKeyFromCoords(lat, lon);
                             if (locationKey) {
                                 userLocationKey = locationKey.key;
@@ -1452,33 +1458,46 @@
                                 
                                 document.getElementById('user-location').textContent = `📍 ${locationName}`;
                                 
-                                // Fetch weather for user location
+                                // Ambil data cuaca untuk lokasi pengguna
                                 await fetchUserWeather(userLocationKey);
                             } else {
                                 throw new Error('Location key not found');
                             }
                         } catch (error) {
                             console.log('Error getting user location weather:', error);
-                            // Fallback to default location
-                            document.getElementById('user-location').textContent = '📍 Jakarta, Indonesia';
+                            // Fallback jika terjadi error pada API atau lokasi tidak ditemukan
+                            document.getElementById('user-location').textContent = '📍 Jakarta, Indonesia (Fallback)';
                             await fetchUserWeather('588306'); // Jakarta location key
                         }
                     },
                     (error) => {
                         console.log('Geolocation error:', error);
-                        // Fallback to default location
-                        document.getElementById('user-location').textContent = '📍 Jakarta, Indonesia';
-                        fetchUserWeather('588306'); // Jakarta location key
+                        // Tampilkan pesan "Loading..." jika GPS dimatikan atau izin ditolak
+                        document.getElementById('user-location').textContent = '📍 GPS is turned off';
+                        document.getElementById('weather-condition').textContent = 'Loading...';
+                        document.getElementById('temperature').textContent = '--°';
+                        
+                        // Hapus animasi pulse setelah beberapa detik untuk menghindari kesan macet
+                        setTimeout(() => {
+                            document.getElementById('temperature').classList.remove('pulse');
+                            document.getElementById('weather-condition').classList.remove('pulse');
+                        }, 3000);
+
+                        // Fallback ke lokasi default jika terjadi error
+                        console.log('Falling back to default location: Jakarta, Indonesia');
+                        fetchUserWeather('588306'); 
                     },
                     {
                         timeout: 10000,
-                        enableHighAccuracy: false
+                        enableHighAccuracy: true // Minta akurasi tinggi
                     }
                 );
             } else {
-                // Geolocation not supported, use default
-                document.getElementById('user-location').textContent = '📍 Jakarta, Indonesia';
-                fetchUserWeather('588306'); // Jakarta location key
+                // Geolocation tidak didukung oleh browser
+                document.getElementById('user-location').textContent = '📍 Geolocation not supported';
+                document.getElementById('weather-condition').textContent = 'Fallback...';
+                document.getElementById('temperature').textContent = '--°';
+                fetchUserWeather('588306'); 
             }
         }
 
