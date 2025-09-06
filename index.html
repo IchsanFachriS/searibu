@@ -1436,22 +1436,22 @@
         // Get user location and fetch weather
         // Get user location and fetch weather
         function getUserLocationAndWeather() {
-            // Check if browser supports Geolocation API
+            // Cek apakah browser mendukung Geolocation API
             if (navigator.geolocation) {
-                // Display loading messages initially
+                // Tampilkan pesan loading di awal
                 document.getElementById('user-location').textContent = '📍 Getting location...';
                 document.getElementById('temperature').classList.add('pulse');
                 document.getElementById('weather-condition').classList.add('pulse');
                 document.getElementById('weather-condition').textContent = 'Loading...';
 
-                // Request location permission from the user
+                // Minta izin lokasi dari pengguna
                 navigator.geolocation.getCurrentPosition(
                     async (position) => {
                         const lat = position.coords.latitude;
                         const lon = position.coords.longitude;
                         
                         try {
-                            // Get location key from coordinates
+                            // Dapatkan location key dari koordinat
                             const locationKey = await getLocationKeyFromCoords(lat, lon);
                             if (locationKey) {
                                 userLocationKey = locationKey.key;
@@ -1459,56 +1459,46 @@
                                 
                                 document.getElementById('user-location').textContent = `📍 ${locationName}`;
                                 
-                                // Fetch weather for user location
+                                // Ambil data cuaca untuk lokasi pengguna
                                 await fetchUserWeather(userLocationKey);
                             } else {
-                                // If location key not found, clear location and weather info
-                                document.getElementById('user-location').textContent = '📍 Location not found';
-                                document.getElementById('weather-condition').textContent = '—';
-                                document.getElementById('temperature').textContent = '--°';
-                                document.getElementById('temperature').classList.remove('pulse');
-                                document.getElementById('weather-condition').classList.remove('pulse');
+                                throw new Error('Location key not found');
                             }
                         } catch (error) {
-                            console.error('Error getting user location weather:', error);
-                            // Clear location and weather info on API error
-                            document.getElementById('user-location').textContent = '📍 Location data error';
-                            document.getElementById('weather-condition').textContent = '—';
-                            document.getElementById('temperature').textContent = '--°';
-                            document.getElementById('temperature').classList.remove('pulse');
-                            document.getElementById('weather-condition').classList.remove('pulse');
+                            console.log('Error getting user location weather:', error);
+                            // Fallback jika terjadi error pada API atau lokasi tidak ditemukan
+                            document.getElementById('user-location').textContent = '📍 Jakarta, Indonesia (Fallback)';
+                            await fetchUserWeather('588306'); // Jakarta location key
                         }
                     },
                     (error) => {
                         console.log('Geolocation error:', error);
-                        // Display 'Loading...' message if GPS is off or permission is denied
+                        // Tampilkan pesan "Loading..." jika GPS dimatikan atau izin ditolak
                         document.getElementById('user-location').textContent = '📍 GPS is turned off';
                         document.getElementById('weather-condition').textContent = 'Loading...';
                         document.getElementById('temperature').textContent = '--°';
-
-                        // Remove pulse animation after a few seconds
+                        
+                        // Hapus animasi pulse setelah beberapa detik untuk menghindari kesan macet
                         setTimeout(() => {
                             document.getElementById('temperature').classList.remove('pulse');
                             document.getElementById('weather-condition').classList.remove('pulse');
                         }, 3000);
-                        
-                        // Do not use a fallback. Just clear the data.
-                        document.getElementById('user-location').textContent = '📍 Location unavailable';
-                        document.getElementById('weather-condition').textContent = '—';
-                        document.getElementById('temperature').textContent = '--°';
+
+                        // Fallback ke lokasi default jika terjadi error
+                        console.log('Falling back to default location: Jakarta, Indonesia');
+                        fetchUserWeather('588306'); 
                     },
                     {
                         timeout: 10000,
-                        enableHighAccuracy: true // Request high accuracy
+                        enableHighAccuracy: true // Minta akurasi tinggi
                     }
                 );
             } else {
-                // Geolocation is not supported by the browser
+                // Geolocation tidak didukung oleh browser
                 document.getElementById('user-location').textContent = '📍 Geolocation not supported';
-                document.getElementById('weather-condition').textContent = '—';
+                document.getElementById('weather-condition').textContent = 'Fallback...';
                 document.getElementById('temperature').textContent = '--°';
-                document.getElementById('temperature').classList.remove('pulse');
-                document.getElementById('weather-condition').classList.remove('pulse');
+                fetchUserWeather('588306'); 
             }
         }
         

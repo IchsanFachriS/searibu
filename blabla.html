@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tide Harmonic Time Series</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    h2 {
+      margin-bottom: 10px;
+    }
+    #chartContainer {
+      width: 800px;   /* lebar chart */
+      height: 400px;  /* tinggi chart */
+      margin: auto;
+    }
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+    .legend-box {
+      display: inline-block;
+      margin: 5px 10px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .legend-tide { border: 2px solid blue; color: blue; }
+    .legend-high { background-color: red; color: white; }
+    .legend-low { background-color: green; color: white; }
+  </style>
+</head>
+<body>
+  <h2>Tide Harmonic Time Series</h2>
+  
+  <label for="dateInput">Pilih Tanggal:</label>
+  <input type="date" id="dateInput">
+
+  <div id="chartContainer">
+    <canvas id="tideChart"></canvas>
+  </div>
+
+  <!-- legend statis -->
+  <div>
+    <span class="legend-box legend-tide">Tide (z)</span>
+    <span class="legend-box legend-high">High Peak</span>
+    <span class="legend-box legend-low">Lowest Peak</span>
+  </div>
+
+  <script>
+    let chart;
+    let tideDataByDate = {};
+
+    // parsing CSV sesuai struktur yang kamu kasih
+    async function loadCSV() {
+      const response = await fetch("data/tide.csv"); // file CSV harus ada di folder yang sama
+      const data = await response.text();
+      const rows = data.trim().split("\n").slice(1); // skip header
+
+      rows.forEach(row => {
+        const cols = row.split(",");
+        const datetime = cols[4];   // kolom datetime (yyyy-mm-dd hh:mm)
+        const z = parseFloat(cols[5]); // kolom z
+
+        const date = datetime.split(" ")[0]; // yyyy-mm-dd
+        if (!tideDataByDate[date]) tideDataByDate[date] = [];
+        tideDataByDate[date].push({
+          datetime,
+          z
+        });
+      });
+
+      // set default date ke hari pertama ada data
+      const firstDate = Object.keys(tideDataByDate)[0];
+      document.getElementById("dateInput").value = firstDate;
+      updateChart(firstDate);
+
+      // event ganti tanggal
+      document.getElementById("dateInput").addEventListener("change", e => {
+        updateChart(e.target.value);
+      });
+    }
+
+    // cari peak
+    function findPeaks(values) {
+      let highs = [], lows = [];
+      for (let i = 1; i < values.length - 1; i++) {
+        if (values[i] > values[i-1] && values[i] > values[i+1]) highs.push(i);
+        if (values[i] < values[i-1] && values[i] < values[i+1]) lows.push(i);
+      }
+      return { highs, lows };
+    }
+
+    // update chart
+    function updateChart(date) {
+      const dataset = tideDataByDate[date];
+      if (!dataset) {
+        alert("Data tidak tersedia untuk tanggal " + date);
+        return;
+      }
+
+      const labels = dataset.map(d => d.datetime.split(" ")[1]); // ambil jam (hh:mm)
+      const values = dataset.map(d => d.z);
+
+      const { highs, lows } = findPeaks(values);
+
+      const highPoints = highs.map(i => ({ x: labels[i], y: values[i] }));
+      const lowPoints = lows.map(i => ({ x: labels[i], y: values[i] }));
+
+      const ctx = document.getElementById("tideChart").getContext("2d");
+      if (chart) chart.destroy();
+
+      chart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Tide (z)",
+              data: values,
+              borderColor: "blue",
+              backgroundColor: "rgba(0,0,255,0.1)",
+              borderWidth: 2,
+              tension: 0.4,
+              pointRadius: 0
+            },
+            {
+              label: "High Peak",
+              data: highPoints,
+              borderColor: "red",
+              backgroundColor: "red",
+              type: "scatter",
+              pointRadius: 6
+            },
+            {
+              label: "Lowest Peak",
+              data: lowPoints,
+              borderColor: "green",
+              backgroundColor: "green",
+              type: "scatter",
+              pointRadius: 6
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: "Time"
+              },
+              ticks: {
+                maxTicksLimit: 12
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: "Tide Height (z)"
+              },
+              suggestedMin: Math.min(...values) - 0.2,
+              suggestedMax: Math.max(...values) + 0.2
+            }
+          },
+          plugins: {
+            legend: { display: false } // legend manual statis
+          }
+        }
+      });
+    }
+
+    loadCSV();
+  </script>
+</body>
+</html>
