@@ -1434,24 +1434,17 @@
         }
 
         // Get user location and fetch weather
-        // Get user location and fetch weather
         function getUserLocationAndWeather() {
-            // Cek apakah browser mendukung Geolocation API
             if (navigator.geolocation) {
-                // Tampilkan pesan loading di awal
                 document.getElementById('user-location').textContent = '📍 Getting location...';
-                document.getElementById('temperature').classList.add('pulse');
-                document.getElementById('weather-condition').classList.add('pulse');
-                document.getElementById('weather-condition').textContent = 'Loading...';
-
-                // Minta izin lokasi dari pengguna
+                
                 navigator.geolocation.getCurrentPosition(
                     async (position) => {
                         const lat = position.coords.latitude;
                         const lon = position.coords.longitude;
                         
                         try {
-                            // Dapatkan location key dari koordinat
+                            // Get location key from coordinates
                             const locationKey = await getLocationKeyFromCoords(lat, lon);
                             if (locationKey) {
                                 userLocationKey = locationKey.key;
@@ -1459,49 +1452,36 @@
                                 
                                 document.getElementById('user-location').textContent = `📍 ${locationName}`;
                                 
-                                // Ambil data cuaca untuk lokasi pengguna
+                                // Fetch weather for user location
                                 await fetchUserWeather(userLocationKey);
                             } else {
                                 throw new Error('Location key not found');
                             }
                         } catch (error) {
                             console.log('Error getting user location weather:', error);
-                            // Fallback jika terjadi error pada API atau lokasi tidak ditemukan
-                            document.getElementById('user-location').textContent = '📍 Jakarta, Indonesia (Fallback)';
+                            // Fallback to default location
+                            document.getElementById('user-location').textContent = '📍 Jakarta, Indonesia';
                             await fetchUserWeather('588306'); // Jakarta location key
                         }
                     },
                     (error) => {
                         console.log('Geolocation error:', error);
-                        // Tampilkan pesan "Loading..." jika GPS dimatikan atau izin ditolak
-                        document.getElementById('user-location').textContent = '📍 GPS is turned off';
-                        document.getElementById('weather-condition').textContent = 'Loading...';
-                        document.getElementById('temperature').textContent = '--°';
-                        
-                        // Hapus animasi pulse setelah beberapa detik untuk menghindari kesan macet
-                        setTimeout(() => {
-                            document.getElementById('temperature').classList.remove('pulse');
-                            document.getElementById('weather-condition').classList.remove('pulse');
-                        }, 3000);
-
-                        // Fallback ke lokasi default jika terjadi error
-                        console.log('Falling back to default location: Jakarta, Indonesia');
-                        fetchUserWeather('588306'); 
+                        // Fallback to default location
+                        document.getElementById('user-location').textContent = '📍 Jakarta, Indonesia';
+                        fetchUserWeather('588306'); // Jakarta location key
                     },
                     {
                         timeout: 10000,
-                        enableHighAccuracy: true // Minta akurasi tinggi
+                        enableHighAccuracy: false
                     }
                 );
             } else {
-                // Geolocation tidak didukung oleh browser
-                document.getElementById('user-location').textContent = '📍 Geolocation not supported';
-                document.getElementById('weather-condition').textContent = 'Fallback...';
-                document.getElementById('temperature').textContent = '--°';
-                fetchUserWeather('588306'); 
+                // Geolocation not supported, use default
+                document.getElementById('user-location').textContent = '📍 Jakarta, Indonesia';
+                fetchUserWeather('588306'); // Jakarta location key
             }
         }
-        
+
         // Get AccuWeather location key from coordinates
         async function getLocationKeyFromCoords(lat, lon) {
             const API_KEY = 'WxUMlB3SDUwd1MohQYAEbq7reIGtmP1O';
